@@ -1,0 +1,23 @@
+{
+  "cartridge_id": "BS1926-001",
+  "title": "Giants of Jazz: Bessie Smith",
+  "artist": "Smith, Bessie",
+  "year": 1923,
+  "tracks": [
+    {
+      "number": 1,
+      "title": "Down Hearted Blues",
+      "path": "audio/01 - Down Hearted Blues.m4a"
+    },
+    {
+      "number": 2,
+      "title": "Baby Won\u2019t You Please Come Home Blues",
+      "path": "audio/02 - Baby Wont You Please Come Home Blues.m4a"
+    },
+    {
+      "number": 3,
+      "title": "\u2019Taint Nobody\u2019s Business If I Do",
+      "path": "audio/03 - Taint Nobodys Business If I Do.m4a"
+    }
+  ]
+}

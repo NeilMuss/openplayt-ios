@@ -1,0 +1,22 @@
+{
+  "cartridge_id": "SPELLS201x-001",
+  "title": "The Night Has Eyes",
+  "artist": "The Spells",
+  "tracks": [
+    {
+      "number": 1,
+      "title": "Lilith",
+      "path": "audio/01 - Lilith.m4a"
+    },
+    {
+      "number": 2,
+      "title": "Vanishing Act",
+      "path": "audio/02 - Vanishing Act.m4a"
+    },
+    {
+      "number": 3,
+      "title": "Strange",
+      "path": "audio/03 - Strange.m4a"
+    }
+  ]
+}

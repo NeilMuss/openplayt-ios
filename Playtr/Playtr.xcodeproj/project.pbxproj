@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FE6F8E6B2F003D1A00D2AF68 /* Playtr/Web in Resources */ = {isa = PBXBuildFile; fileRef = FE6F8E6A2F003D1A00D2AF68 /* Playtr/Web */; };
+		FE6F8E6D2F003D1A00D2AF69 /* Playtr/Playtr/TestAssets in Resources */ = {isa = PBXBuildFile; fileRef = FE6F8E6C2F003D1A00D2AF69 /* Playtr/Playtr/TestAssets */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		FE6F8E502F003D1A00D2AF67 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +32,8 @@
 		FE6F8E422F003D1800D2AF67 /* Playtr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Playtr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE6F8E4F2F003D1A00D2AF67 /* PlaytrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlaytrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE6F8E592F003D1A00D2AF67 /* PlaytrUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlaytrUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE6F8E6A2F003D1A00D2AF68 /* Playtr/Web */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Playtr/Web; sourceTree = "<group>"; };
+		FE6F8E6C2F003D1A00D2AF69 /* TestAssets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TestAssets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -72,6 +79,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FE5EEB802F01CEBF00862C9A /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				FE6F8E6A2F003D1A00D2AF68 /* Playtr/Web */,
+				FE6F8E6C2F003D1A00D2AF69 /* Playtr/Playtr/TestAssets */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		FE6F8E392F003D1800D2AF67 = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +95,7 @@
 				FE6F8E522F003D1A00D2AF67 /* PlaytrTests */,
 				FE6F8E5C2F003D1A00D2AF67 /* PlaytrUITests */,
 				FE6F8E432F003D1800D2AF67 /* Products */,
+				FE5EEB802F01CEBF00862C9A /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -212,6 +229,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE6F8E6B2F003D1A00D2AF68 /* Playtr/Web in Resources */,
+				FE6F8E6D2F003D1A00D2AF69 /* Playtr/Playtr/TestAssets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,6 +346,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -383,6 +403,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
