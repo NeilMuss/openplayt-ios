@@ -81,6 +81,19 @@ final class PlaybackViewModel: ObservableObject, PlaybackEventSink {
         refreshFromSession(fallbackTrack: tracks.first)
     }
 
+    func loadArchiveQueue(from cartridge: PlaytArchiveCartridge) {
+        let tracks = cartridge.tracks.map { track in
+            Track(
+                title: track.title,
+                artist: cartridge.artist,
+                albumTitle: cartridge.title,
+                duration: 0
+            )
+        }
+        loadQueueUseCase.execute(tracks: tracks)
+        refreshFromSession(fallbackTrack: tracks.first)
+    }
+
     private func refreshFromSession(fallbackTrack: Track?) {
         status = session.machine.state.status
         position = session.machine.state.position

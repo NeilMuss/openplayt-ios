@@ -11,8 +11,7 @@ struct ContentView: View {
     @StateObject private var viewModel = PlaybackViewModel()
 
     var body: some View {
-        WebPlayerView(viewModel: viewModel)
-            .ignoresSafeArea()
+        PlaytArchiveBrowserView(viewModel: viewModel)
     }
 }
 

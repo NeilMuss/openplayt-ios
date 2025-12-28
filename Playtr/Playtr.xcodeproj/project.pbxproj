@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FE6F8E6B2F003D1A00D2AF68 /* Playtr/Web in Resources */ = {isa = PBXBuildFile; fileRef = FE6F8E6A2F003D1A00D2AF68 /* Playtr/Web */; };
-		FE6F8E6D2F003D1A00D2AF69 /* Playtr/Playtr/TestAssets in Resources */ = {isa = PBXBuildFile; fileRef = FE6F8E6C2F003D1A00D2AF69 /* Playtr/Playtr/TestAssets */; };
+		FE6F8E6D2F003D1A00D2AF69 /* TestAssets in Resources */ = {isa = PBXBuildFile; fileRef = FE6F8E6C2F003D1A00D2AF69 /* TestAssets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,7 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				FE6F8E6A2F003D1A00D2AF68 /* Playtr/Web */,
-				FE6F8E6C2F003D1A00D2AF69 /* Playtr/Playtr/TestAssets */,
+				FE6F8E6C2F003D1A00D2AF69 /* TestAssets */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -230,7 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE6F8E6B2F003D1A00D2AF68 /* Playtr/Web in Resources */,
-				FE6F8E6D2F003D1A00D2AF69 /* Playtr/Playtr/TestAssets in Resources */,
+				FE6F8E6D2F003D1A00D2AF69 /* TestAssets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
