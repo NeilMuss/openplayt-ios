@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Playtr</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="player">
+    <section class="now-playing">
+      <div class="title" id="title">No Track</div>
+      <div class="artist" id="artist"></div>
+      <div class="status" id="status">Idle</div>
+    </section>
+
+    <section class="controls">
+      <button class="control" id="prev">Prev</button>
+      <button class="control" id="play">Play</button>
+      <button class="control" id="next">Next</button>
+    </section>
+
+    <section class="sliders">
+      <label class="slider-row">
+        <span>Position</span>
+        <input id="position" type="range" min="0" max="240" step="1" value="0" />
+      </label>
+      <label class="slider-row">
+        <span>Volume</span>
+        <input id="volume" type="range" min="0" max="1" step="0.01" value="1" />
+      </label>
+    </section>
+
+    <button class="secondary" id="reload">Reload Sample Queue</button>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

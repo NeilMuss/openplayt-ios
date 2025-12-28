@@ -1,0 +1,98 @@
+:root {
+  color-scheme: light;
+  font-family: "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  background: radial-gradient(circle at top, #f6f2e8, #efe8da 60%, #e5ddcd 100%);
+  color: #1f1c17;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.player {
+  width: min(320px, 92vw);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  padding: 28px 24px 24px;
+  box-shadow: 0 30px 60px rgba(46, 35, 24, 0.2);
+  display: grid;
+  gap: 20px;
+}
+
+.now-playing {
+  text-align: center;
+  display: grid;
+  gap: 6px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.artist {
+  font-size: 14px;
+  color: rgba(31, 28, 23, 0.7);
+}
+
+.status {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(31, 28, 23, 0.5);
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.control {
+  border: none;
+  background: #1f1c17;
+  color: #fefbf4;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.control.secondary {
+  background: #d7cbb8;
+  color: #1f1c17;
+}
+
+.sliders {
+  display: grid;
+  gap: 12px;
+}
+
+.slider-row {
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(31, 28, 23, 0.6);
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+.secondary {
+  border: 1px solid rgba(31, 28, 23, 0.2);
+  background: transparent;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
