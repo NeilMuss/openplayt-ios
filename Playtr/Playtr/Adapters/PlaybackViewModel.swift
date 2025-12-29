@@ -10,6 +10,7 @@ final class PlaybackViewModel: ObservableObject, PlaybackEventSink {
     @Published private(set) var position: TimeInterval = 0
     @Published private(set) var volume: Float = 1.0
     @Published private(set) var isQueueEnded = false
+    @Published var playbackError: String?
 
     private let session: PlaybackSession
     private let audio: AudioPlayerPort
@@ -26,12 +27,29 @@ final class PlaybackViewModel: ObservableObject, PlaybackEventSink {
     init(session: PlaybackSession, audio: AudioPlayerPort) {
         self.session = session
         self.audio = audio
+        if let localAudio = audio as? LocalAudioPlayer {
+            localAudio.errorHandler = { [weak self] message in
+                Task { @MainActor in
+                    self?.playbackError = message
+                }
+            }
+            localAudio.positionHandler = { [weak self] position in
+                Task { @MainActor in
+                    self?.position = position
+                }
+            }
+            localAudio.completionHandler = { [weak self] in
+                Task { @MainActor in
+                    self?.next()
+                }
+            }
+        }
         loadSampleQueue()
         refreshFromSession(fallbackTrack: session.machine.queue.currentTrack)
     }
 
     convenience init() {
-        self.init(session: PlaybackSession(), audio: StubAudioPlayer())
+        self.init(session: PlaybackSession(), audio: LocalAudioPlayer())
     }
 
     var isPlaying: Bool {
@@ -82,12 +100,17 @@ final class PlaybackViewModel: ObservableObject, PlaybackEventSink {
     }
 
     func loadArchiveQueue(from cartridge: PlaytArchiveCartridge) {
+        playbackError = nil
         let tracks = cartridge.tracks.map { track in
             Track(
                 title: track.title,
                 artist: cartridge.artist,
                 albumTitle: cartridge.title,
-                duration: 0
+                duration: 0,
+                trackNumber: track.number,
+                relativePath: track.path,
+                cartridgeID: cartridge.cartridgeID,
+                archiveSource: cartridge.source
             )
         }
         loadQueueUseCase.execute(tracks: tracks)
@@ -96,7 +119,10 @@ final class PlaybackViewModel: ObservableObject, PlaybackEventSink {
 
     private func refreshFromSession(fallbackTrack: Track?) {
         status = session.machine.state.status
-        position = session.machine.state.position
+        let newPosition = session.machine.state.position
+        if newPosition > 0 || position == 0 || status == .idle || status == .stopped {
+            position = newPosition
+        }
         volume = min(max(volume, 0), 1)
 
         if let track = session.machine.state.currentTrack ?? fallbackTrack {
@@ -115,8 +141,12 @@ final class PlaybackViewModel: ObservableObject, PlaybackEventSink {
 
     func trackStarted(_ track: Track) {
         isQueueEnded = false
+        let wasPaused = status == .paused
         status = .playing
-        position = 0
+        if !wasPaused {
+            position = 0
+        }
+        playbackError = nil
         nowPlayingTitle = track.title
         nowPlayingArtist = "\(track.artist) • \(track.albumTitle)"
     }

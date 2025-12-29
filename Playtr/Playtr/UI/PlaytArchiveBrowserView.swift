@@ -4,6 +4,7 @@ struct PlaytArchiveBrowserView: View {
     @ObservedObject var viewModel: PlaybackViewModel
     @State private var cartridges: [PlaytArchiveCartridge] = []
     @State private var errorMessage: String?
+    @State private var selectedSource: ArchiveSource = .bundledTestArchive
 
     var body: some View {
         NavigationStack {
@@ -24,7 +25,17 @@ struct PlaytArchiveBrowserView: View {
                     }
                 }
             }
-            .navigationTitle("Test Library")
+            .navigationTitle("Library")
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Picker("Library", selection: $selectedSource) {
+                        ForEach(ArchiveSource.allCases) { source in
+                            Text(source.displayName).tag(source)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
+            }
             .navigationDestination(for: PlaytArchiveCartridge.self) { cartridge in
                 PlaytArchiveDetailView(viewModel: viewModel, cartridge: cartridge)
             }
@@ -32,21 +43,25 @@ struct PlaytArchiveBrowserView: View {
         .task {
             await loadCartridges()
         }
+        .onChange(of: selectedSource) { _ in
+            Task {
+                await loadCartridges()
+            }
+        }
     }
 
     private func loadCartridges() async {
         do {
-            let ids = try TestPlaytArchive.listCartridgeIDs()
-            let decoder = JSONDecoder()
+            let library = PlaytLibrary.shared
+            let ids = try library.listCartridgeIDs(source: selectedSource)
             let items = try ids.map { id -> PlaytArchiveCartridge in
-                let data = try TestPlaytArchive.loadPlaytJSON(cartridgeID: id)
-                return try decoder.decode(PlaytArchiveCartridge.self, from: data)
+                try library.loadCartridge(source: selectedSource, cartridgeID: id)
             }
             cartridges = items.sorted { $0.title < $1.title }
             errorMessage = nil
         } catch {
             cartridges = []
-            errorMessage = "Failed to load TestPlaytArchive: \(error.localizedDescription)"
+            errorMessage = "Failed to load library: \(error.localizedDescription)"
         }
     }
 }
@@ -54,6 +69,8 @@ struct PlaytArchiveBrowserView: View {
 private struct PlaytArchiveDetailView: View {
     @ObservedObject var viewModel: PlaybackViewModel
     let cartridge: PlaytArchiveCartridge
+    @State private var installMessage: String?
+    @State private var didLoadQueue = false
 
     var body: some View {
         ScrollView {
@@ -75,6 +92,25 @@ private struct PlaytArchiveDetailView: View {
                 }
                 .buttonStyle(.borderedProminent)
 
+                if cartridge.source == .bundledTestArchive {
+                    Button("Install Album to Local Library") {
+                        installToLocal()
+                    }
+                    .buttonStyle(.bordered)
+                }
+
+                if let installMessage {
+                    Text(installMessage)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+
+                if let playbackError = viewModel.playbackError {
+                    Text(playbackError)
+                        .font(.footnote)
+                        .foregroundStyle(.red)
+                }
+
                 WebPlayerView(viewModel: viewModel)
                     .frame(height: 360)
                     .clipShape(RoundedRectangle(cornerRadius: 18))
@@ -92,5 +128,20 @@ private struct PlaytArchiveDetailView: View {
         }
         .navigationTitle("Album")
         .navigationBarTitleDisplayMode(.inline)
+        .task {
+            if !didLoadQueue {
+                viewModel.loadArchiveQueue(from: cartridge)
+                didLoadQueue = true
+            }
+        }
+    }
+
+    private func installToLocal() {
+        do {
+            try PlaytLibrary.shared.installBundledCartridgeToLocal(cartridgeID: cartridge.cartridgeID)
+            installMessage = "Installed to Local Library."
+        } catch {
+            installMessage = "Install failed: \(error.localizedDescription)"
+        }
     }
 }

@@ -3,27 +3,40 @@ import XCTest
 
 final class TestPlaytArchiveTests: XCTestCase {
     func testBundledArchiveHasPlayableCartridges() throws {
-        let rootURL = TestPlaytArchive.bundledArchiveRootURL()
-        let cartridgeIDs = try TestPlaytArchive.listCartridgeIDs()
-        XCTAssertFalse(cartridgeIDs.isEmpty, "No cartridges found in TestPlaytArchive.")
+        let library = PlaytLibrary()
+        let cartridgeIDs = try library.listCartridgeIDs(source: .bundledTestArchive)
+        XCTAssertFalse(cartridgeIDs.isEmpty, "No cartridges found in bundled archive.")
 
-        let fileManager = FileManager.default
         for cartridgeID in cartridgeIDs {
-            let cartridgeURL = rootURL
-                .appendingPathComponent("cartridges", isDirectory: true)
-                .appendingPathComponent(cartridgeID, isDirectory: true)
-            let playtURL = cartridgeURL.appendingPathComponent("playt.json")
-            XCTAssertTrue(fileManager.fileExists(atPath: playtURL.path), "Missing playt.json for \(cartridgeID).")
-
-            let audioURL = cartridgeURL.appendingPathComponent("audio", isDirectory: true)
-            let audioFiles = try fileManager.contentsOfDirectory(
-                at: audioURL,
-                includingPropertiesForKeys: nil,
-                options: [.skipsHiddenFiles]
-            ).filter { ["m4a", "mp3"].contains($0.pathExtension.lowercased()) }
-
-            XCTAssertFalse(audioFiles.isEmpty, "No audio tracks found for \(cartridgeID).")
-            print("TestPlaytArchive cartridge \(cartridgeID): \(audioFiles.count) track(s)")
+            let cartridge = try library.loadCartridge(source: .bundledTestArchive, cartridgeID: cartridgeID)
+            XCTAssertFalse(cartridge.tracks.isEmpty, "No tracks found for \(cartridgeID).")
+            let firstTrack = try XCTUnwrap(cartridge.tracks.first)
+            let url = try library.resolveMediaURL(
+                source: .bundledTestArchive,
+                cartridgeID: cartridgeID,
+                relativePath: firstTrack.path
+            )
+            XCTAssertTrue(FileManager.default.fileExists(atPath: url.path))
         }
+    }
+
+    func testInstallFromBundledToLocalArchive() throws {
+        let library = PlaytLibrary()
+        let bundledIDs = try library.listCartridgeIDs(source: .bundledTestArchive)
+        let cartridgeID = try XCTUnwrap(bundledIDs.first)
+
+        try library.installBundledCartridgeToLocal(cartridgeID: cartridgeID)
+
+        let localIDs = try library.listCartridgeIDs(source: .localArchive)
+        XCTAssertTrue(localIDs.contains(cartridgeID))
+
+        let cartridge = try library.loadCartridge(source: .localArchive, cartridgeID: cartridgeID)
+        let firstTrack = try XCTUnwrap(cartridge.tracks.first)
+        let url = try library.resolveMediaURL(
+            source: .localArchive,
+            cartridgeID: cartridgeID,
+            relativePath: firstTrack.path
+        )
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.path))
     }
 }

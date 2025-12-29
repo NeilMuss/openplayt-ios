@@ -1,11 +1,12 @@
 import Foundation
 
-struct PlaytArchiveCartridge: Identifiable, Hashable, Codable {
+struct PlaytArchiveCartridge: Identifiable, Hashable {
     let cartridgeID: String
     let title: String
     let artist: String
     let year: Int?
     let tracks: [PlaytArchiveTrack]
+    let source: ArchiveSource
 
     var id: String { cartridgeID }
 
@@ -14,14 +15,6 @@ struct PlaytArchiveCartridge: Identifiable, Hashable, Codable {
             return "\(artist) • \(year)"
         }
         return artist
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case cartridgeID = "cartridge_id"
-        case title
-        case artist
-        case year
-        case tracks
     }
 }
 
